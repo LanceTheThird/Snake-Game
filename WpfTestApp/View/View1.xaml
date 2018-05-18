@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="WpfTestApp.View.View1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:m="clr-namespace:WpfTestApp.Model"
+             xmlns:vm="clr-namespace:WpfTestApp.ViewModels"
+             d:DataContext="{d:DesignInstance vm:MenuViewModel}"
+
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="700">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ListTemplate" DataType="m:Level">
+            <DataTemplate.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Height" Value="40" />
+                    <Setter Property="Width" Value="200" />
+                </Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Black" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+            </DataTemplate.Resources>
+            <Grid>
+                <Button Content ="{Binding Str}" Command="{Binding ElementName = LevelsBox, Path=DataContext.LevelCommand}" 
+                        CommandParameter="{Binding LevelNumber}"/>
+            </Grid>
+        </DataTemplate>
+        
+    </UserControl.Resources>
+
+    <Grid ShowGridLines="False" Background="DarkOliveGreen">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ItemsControl x:Name="LevelsBox" Grid.Column="0"
+                    ItemsSource="{Binding Levels}"
+                 ItemTemplate="{StaticResource ListTemplate}"
+                 Background="DarkOliveGreen">
+
+        </ItemsControl>
+        <Label Grid.Column="1" Height="200"
+               Content="{Binding Title}" ></Label>
+        <Label Height="405" Width="405" Grid.Column="2">
+            <Label.Background>
+                <ImageBrush ImageSource="{Binding ListBack}" />
+            </Label.Background>
+        </Label>
+    </Grid>
+   
+</UserControl>

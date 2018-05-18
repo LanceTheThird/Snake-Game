@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="WpfTestApp.View.DetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:WpfTestApp.ViewModels"
+             d:DataContext="{d:DesignInstance vm:MenuViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="1100">
+    <UserControl.Resources>
+        <ItemsPanelTemplate x:Key="ListPanelTemplate">
+            <Canvas />
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:Key="ListTemplate" DataType="vm:Block">
+
+            <DataTemplate.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Height" Value="8" />
+                    <Setter Property="Width" Value="8" />
+                    <Setter Property="Background" Value="ForestGreen"></Setter>
+                    
+                </Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Black" />
+                    <Setter Property="BorderThickness" Value="1" />
+                </Style>
+            </DataTemplate.Resources>
+            <Border>
+                <TextBlock></TextBlock>
+            </Border>
+            
+        </DataTemplate>
+
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+    <Grid ShowGridLines="False">
+        <Grid.Background>
+            <ImageBrush ImageSource="{Binding DetaiilsBack}" />
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="Title" Grid.Column="0" Grid.Row="0" Content="{Binding CurrentLevelTitle}" Foreground="Blue" FontFamily="Century Gothic" FontWeight="UltraBold"></Label>
+        <Label x:Name="Record" Grid.Column="1" Grid.Row="0" Content="{Binding ScoreString}" Margin="35" HorizontalAlignment="Center" Height="100"></Label>
+        <Label x:Name="PreviewTitle" Grid.Column="2" Grid.Row="0" Content="Level Preview" Margin="35" HorizontalAlignment="Center" Height="100"></Label>
+        <Button x:Name="StartEasyGame" Grid.Column="0" Grid.Row="1" Content="Start" Command="{Binding EasyCommand}"></Button>
+        <Button x:Name="Repeat" Grid.Column="0" Grid.Row="2" Content="Replay previous game" Command="{Binding RepeatCommand}" Visibility="{Binding Path=AdvancedFormat, Converter={StaticResource BoolToVis}}"></Button>
+        <Label x:Name="EasyStat" Grid.Column="1" Grid.Row="2" Content="{Binding EasyDescr}"></Label>
+        <Image x:Name="Shot" Width="350" Height="350"  Grid.Column="1" Grid.Row="1" Source="{Binding AdvancedPictureFormat}"></Image>
+        <Button x:Name="Back" Grid.Column="2" Grid.Row="2" Content="Back" Command="{Binding BackCommand}"></Button>
+        <ItemsControl x:Name="Preview" Grid.Column="2" Grid.Row="1"  Background="DarkSeaGreen" Width="200" Height="100"
+                      ItemTemplate="{StaticResource ListTemplate}"
+                      ItemsPanel="{StaticResource ListPanelTemplate}"
+                      ItemsSource="{Binding Walls}">
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+    </Grid>
+</UserControl>
